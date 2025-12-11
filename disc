@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>Teste DISC - Atrius</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+    :root {
+        --azul: #1B4B8C;
+        --cinza: #f4f4f4;
+        --cinza-card: #ffffff;
+        --texto: #333;
+
+        --cor-D: #e74c3c;  /* vermelho */
+        --cor-I: #27ae60;  /* verde   */
+        --cor-S: #2980b9;  /* azul    */
+        --cor-C: #f1c40f;  /* amarelo */
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background: var(--cinza);
+        color: var(--texto);
+    }
+
+    /* HEADER */
+    .header {
+        background: #ffffff;
+        border-bottom: 4px solid var(--azul);
+        padding: 20px 0 10px 0;
+        text-align: center;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+    }
+
+    .header img {
+        height: 65px;
+        object-fit: contain;
+        margin-bottom: 8px;
+    }
+
+    .header-title {
+        color: var(--azul);
+        font-size: 26px;
+        font-weight: bold;
+    }
+
+    /* TELA DE BOAS-VINDAS */
+    #welcome {
+        background: var(--cinza-card);
+        padding: 25px;
+        margin: 25px auto;
+        max-width: 600px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.08);
+    }
+
+    #welcome h2 {
+        color: var(--azul);
+        margin-bottom: 10px;
+    }
+
+    .campo {
+        margin-bottom: 18px;
+    }
+
+    .campo label {
+        font-weight: bold;
+        color: var(--azul);
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    .campo input {
+        width: 100%;
+        padding: 12px;
+        font-size: 15px;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+        box-sizing: border-box;
+    }
+
+    button {
+        background: var(--azul);
+        color: white;
+        padding: 12px 20px;
+        font-size: 16px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: all 0.2s;
+    }
+
+    button:hover {
+        background: #143a6a;
+    }
+
+    /* PROGRESSO */
+    #progresso {
+        max-width: 900px;
+        margin: 10px auto 0 auto;
+        display: none;
+    }
+
+    #progresso-text {
+        text-align: center;
+        font-weight: bold;
+        margin-bottom: 5px;
+        color: var(--azul);
+    }
+
+    .progress-container {
+        width: 100%;
+        background: #ddd;
+        border-radius: 50px;
+        overflow: hidden;
+        height: 12px;
+    }
+
+    #progress-bar {
+        height: 12px;
+        width: 0;
+        background: var(--azul);
+        transition: width 0.25s ease;
+    }
+
+    /* INSTRUÇÕES */
+    .instrucao {
+        background: #E8F0FF;
+        border-left: 6px solid var(--azul);
+        padding: 15px 20px;
+        margin: 15px auto;
+        max-width: 900px;
+        border-radius: 6px;
+        font-size: 15px;
+        line-height: 1.5;
+        display: none;
+    }
+
+    /* GRUPOS */
+    .grupo-container {
+        background: white;
+        padding: 20px;
+        margin: 20px auto;
+        max-width: 900px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.08);
+        display: none;
+    }
+
+    h3 {
+        margin-top: 0;
+        color: var(--azul);
+        font-size: 20px;
+    }
+
+    .grupo-layout {
+        display: grid;
+        grid-template-columns: 1fr 3fr;
+        gap: 20px;
+        align-items: flex-start;
+    }
+
+    .col-numeros {
+        background: #f7f7f7;
+        border-radius: 8px;
+        padding: 10px;
+        border: 1px solid #ddd;
+    }
+
+    .col-numeros h4 {
+        margin-top: 0;
+        margin-bottom: 10px;
+        font-size: 14px;
+        color: var(--azul);
+    }
+
+    .numero-item {
+        background: #ffffff;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        padding: 10px;
+        text-align: center;
+        margin-bottom: 8px;
+        cursor: grab;
+        font-weight: bold;
+        user-select: none;
+    }
+
+    .numero-item:active {
+        cursor: grabbing;
+    }
+
+    .col-itens {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+    }
+
+    .item {
+        background: #fafafa;
+        border: 1px solid #ddd;
+        padding: 12px;
+        border-radius: 8px;
+        font-size: 15px;
+        line-height: 1.4;
+        min-height: 110px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .dropzone {
+        margin-top: 10px;
+        padding: 8px;
+        border-radius: 6px;
+        border: 2px dashed #bbb;
+        text-align: center;
+        font-size: 14px;
+        color: #777;
+        min-height: 34px;
+        background: #fff;
+    }
+
+    .dropzone.preenchido {
+        border-style: solid;
+        border-color: var(--azul);
+        font-weight: bold;
+        color: var(--azul);
+    }
+
+    .dropzone.sobre {
+        background: #e6f0ff;
+    }
+
+    .nav-grupo {
+        margin-top: 15px;
+        text-align: right;
+    }
+
+    /* RESULTADO */
+    #resultado {
+        margin: 30px auto;
+        padding: 25px;
+        max-width: 900px;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.12);
+        display: none;
+        font-size: 16px;
+        line-height: 1.5;
+    }
+
+    .cards-perfil {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 12px;
+        margin-top: 15px;
+    }
+
+    .card-perfil {
+        border-radius: 10px;
+        padding: 10px;
+        color: white;
+        text-align: center;
+        font-weight: bold;
+    }
+
+    .card-perfil span.pontuacao {
+        display: block;
+        font-weight: normal;
+        font-size: 14px;
+        margin-top: 4px;
+    }
+
+    .card-D { background: var(--cor-D); }
+    .card-I { background: var(--cor-I); }
+    .card-S { background: var(--cor-S); }
+    .card-C { background: var(--cor-C); }
+
+    .laudo {
+        margin-top: 20px;
+        padding: 15px;
+        border-radius: 8px;
+        background: #f8f8f8;
+        border-left: 4px solid var(--azul);
+    }
+
+    .laudo h3 {
+        margin-top: 0;
+        font-size: 18px;
+    }
+
+    @media(max-width:768px){
+        .grupo-layout {
+            grid-template-columns: 1fr;
+        }
+        .col-itens {
+            grid-template-columns: 1fr;
+        }
+        button { width: 100%; }
+        .cards-perfil { grid-template-columns: 1fr 1fr; }
+    }
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<div class="header">
+    <img src="logo-atrius.png" alt="Atrius">
+    <div class="header-title">Teste DISC - Atrius</div>
+</div>
+
+<!-- TELA INICIAL -->
+<div id="welcome">
+    <h2>Bem-vindo ao Teste DISC da Atrius</h2>
+    <p>Preencha seus dados para iniciar o teste.</p>
+
+    <div class="campo">
+        <label>Nome completo</label>
+        <input id="nome">
+    </div>
+
+    <div class="campo">
+        <label>Telefone (WhatsApp)</label>
+        <input id="telefone" placeholder="(51) 99591-2176">
+    </div>
+
+    <div class="campo">
+        <label>E-mail</label>
+        <input id="email" placeholder="exemplo@dominio.com">
+    </div>
+
+    <button onclick="iniciarTeste()">IR PARA O TESTE</button>
+</div>
+
+<!-- PROGRESSO -->
+<div id="progresso">
+    <div id="progresso-text"></div>
+    <div class="progress-container">
+        <div id="progress-bar"></div>
+    </div>
+</div>
+
+<!-- INSTRUÇÕES -->
+<div class="instrucao">
+    <b>Instruções do Teste DISC</b><br><br>
+    • Em cada grupo, utilize os números <b>1, 2, 3 e 4</b>, sem repetir.<br>
+    • <b>1 = menos parecido com você</b><br>
+    • <b>4 = mais parecido com você</b><br><br>
+    <b>Importante:</b> Responda de forma rápida, espontânea e intuitiva. Não existe certo ou errado.
+</div>
+
+<div id="formulario"></div>
+<div id="resultado"></div>
+
+<!-- EmailJS -->
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+<script>
+emailjs.init("dMy7jYWSeALMDD7TI");
+
+const whatsNumero = "5551995912176";
+const EMAILJS_SERVICE_ID = "service_ir6bq6e";
+const EMAILJS_TEMPLATE_ID = "template_jta671p";
+const EMAILJS_TO = "juniorbernardi@atrius.ind.br";
+
+let dadosCandidato = {};
+let ultimoResultado = null;
+
+const grupos = [
+    ["Autoconfiante / Independente / Dominante",
+     "Comunicativo / Alegre / Extrovertido",
+     "Acolhedor / Amigável / Paciente",
+     "Autodisciplinado / Atento aos detalhes / Diligente"],
+
+    ["Pró-ativo / Empreendedor / Corajoso",
+     "Participativo / Relacional / Flexível",
+     "Agradável / Tranquilo / Organizado",
+     "Criterioso / Cuidadoso / Especialista"],
+
+    ["Prático / Rápido / Eficiente",
+     "Persuasivo / Contagiante / Estimulador",
+     "Calmo / Rotineiro / Constante",
+     "Idealizador / Perfeccionista / Diligente"],
+
+    ["Objetivo / Assertivo / Focado em resultados / Energico",
+     "Preza pelo prazer / Emotivo / Divertido",
+     "Conciliador / Conselheiro / Bom ouvinte",
+     "Conforme / Sistemático / Sensato"],
+
+    ["Determinado / Firme / Energico",
+     "Criativo / Falante / Distraído",
+     "Comedido / Amável / Mediador",
+     "Preciso / Lógico / Racional"],
+
+    ["Lutador / Combativo / Agressivo",
+     "Participativo / Facilitador / Influenciador",
+     "Auto-Controlado / Conservador / Responsável",
+     "Profundo / Perceptivo / Estratégico"],
+
+    ["Automotivado / Pioneiro / Impulsionador",
+     "Articulador / Empolgante / Motivador",
+     "Persistente / Prevenido / Tolerante",
+     "Exato / Exigente / Estruturado"],
+
+    ["Resolvedor / Destemido / Desafiador",
+     "Vaidoso / Simpático / Gosta de ser reconhecido",
+     "Aconselhador / Harmonico / Apoiador",
+     "Ponderado / Ordenador / Analisador"],
+
+    ["Competitivo / Assume riscos / Desbravador",
+     "Entusiasmado / Impulsivo / Otimista",
+     "Moderado / Equilibrado / Estável",
+     "Teórico / Conservador / Aprofunda conhecimentos"],
+
+    ["Direcionador / Solucionador / Empreendedor",
+     "Agregador / Sociabilidade / Mobilidade",
+     "Consolidador / Observador / Diplomata",
+     "Regulador / Especialista / Orientador"]
+];
+
+const perfis = ["D","I","S","C"];
+
+const descricoesPerfis = {
+    D: "Pessoas com perfil D – Dominância / Executor tendem a ser diretas, objetivas, focadas em resultado e gostam de desafios. Normalmente assumem a liderança e aceleram decisões.",
+    I: "Pessoas com perfil I – Influência / Comunicador tendem a ser sociáveis, otimistas, comunicativas, gostam de relacionar-se e influenciar pessoas ao redor.",
+    S: "Pessoas com perfil S – Estabilidade / Planejador valorizam harmonia, previsibilidade, trabalho em equipe e ambientes mais tranquilos. Costumam ser pacientes e colaborativas.",
+    C: "Pessoas com perfil C – Cautela / Analista são detalhistas, estruturadas, cuidadosas e focadas em qualidade. Gostam de regras claras, precisão e segurança nas decisões."
+};
+
+/* --------- MONTA OS GRUPOS (DRAG & DROP) --------- */
+
+let html = "";
+grupos.forEach((linha, i) => {
+    html += `
+        <div class="grupo-container" id="grupo-${i}">
+            <h3>Grupo ${i+1}</h3>
+            <div class="grupo-layout">
+                <div class="col-numeros">
+                    <h4>Números disponíveis</h4>
+                    <div class="numero-item" draggable="true" data-valor="1">1</div>
+                    <div class="numero-item" draggable="true" data-valor="2">2</div>
+                    <div class="numero-item" draggable="true" data-valor="3">3</div>
+                    <div class="numero-item" draggable="true" data-valor="4">4</div>
+                </div>
+                <div class="col-itens">`;
+
+    linha.forEach((texto, j) => {
+        html += `
+                    <div class="item">
+                        <div>${texto}</div>
+                        <div class="dropzone"
+                             data-group="${i}"
+                             data-index="${j}">
+                             Arraste um número aqui
+                        </div>
+                    </div>`;
+    });
+
+    html += `
+                </div>
+            </div>`;
+
+    if (i < grupos.length - 1) {
+        html += `<div class="nav-grupo"><button onclick="avancarGrupo(${i})">PRÓXIMA PÁGINA</button></div>`;
+    } else {
+        html += `<div class="nav-grupo"><button onclick="finalizar()">FINALIZAR TESTE</button></div>`;
+    }
+
+    html += `</div>`;
+});
+document.getElementById("formulario").innerHTML = html;
+
+/* --------- DRAG & DROP LÓGICA --------- */
+
+let numeroArrastando = null;
+
+document.querySelectorAll(".numero-item").forEach(el => {
+    el.addEventListener("dragstart", (e) => {
+        numeroArrastando = e.target.getAttribute("data-valor");
+        e.dataTransfer.setData("text/plain", numeroArrastando);
+    });
+});
+
+document.querySelectorAll(".dropzone").forEach(dz => {
+    dz.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        dz.classList.add("sobre");
+    });
+
+    dz.addEventListener("dragleave", () => {
+        dz.classList.remove("sobre");
+    });
+
+    dz.addEventListener("drop", (e) => {
+        e.preventDefault();
+        dz.classList.remove("sobre");
+        const valor = e.dataTransfer.getData("text/plain") || numeroArrastando;
+        if (!valor) return;
+
+        const groupIndex = dz.getAttribute("data-group");
+
+        // Garante que o número não fique duplicado no mesmo grupo
+        document.querySelectorAll(`.dropzone[data-group="${groupIndex}"]`).forEach(outra => {
+            if (outra !== dz && outra.dataset.valor === valor) {
+                outra.dataset.valor = "";
+                outra.textContent = "Arraste um número aqui";
+                outra.classList.remove("preenchido");
+            }
+        });
+
+        dz.dataset.valor = valor;
+        dz.textContent = valor;
+        dz.classList.add("preenchido");
+    });
+
+    // Permite limpar clicando na zona
+    dz.addEventListener("click", () => {
+        dz.dataset.valor = "";
+        dz.textContent = "Arraste um número aqui";
+        dz.classList.remove("preenchido");
+    });
+});
+
+/* --------- INICIAR TESTE --------- */
+
+function iniciarTeste() {
+    const nome = document.getElementById("nome").value.trim();
+    const telefone = document.getElementById("telefone").value.trim();
+    const email = document.getElementById("email").value.trim();
+
+    if (!nome || !telefone || !email) {
+        alert("Preencha Nome, Telefone e E-mail para iniciar.");
+        return;
+    }
+
+    dadosCandidato = { nome, telefone, email };
+
+    document.getElementById("welcome").style.display = "none";
+    document.querySelector(".instrucao").style.display = "block";
+    document.getElementById("progresso").style.display = "block";
+
+    mostrarGrupo(0);
+}
+
+/* --------- CONTROLE GRUPOS + BARRA --------- */
+
+function mostrarGrupo(i) {
+    grupos.forEach((_, idx) => {
+        document.getElementById(`grupo-${idx}`).style.display =
+            idx === i ? "block" : "none";
+    });
+
+    const texto = `Grupo ${i+1} de ${grupos.length}`;
+    document.getElementById("progresso-text").innerText = texto;
+
+    const porcentagem = (i / grupos.length) * 100;
+    document.getElementById("progress-bar").style.width = `${porcentagem}%`;
+
+    window.scrollTo(0,0);
+}
+
+function grupoCompleto(g) {
+    const zonas = document.querySelectorAll(`.dropzone[data-group="${g}"]`);
+    const valores = [];
+
+    for (let dz of zonas) {
+        const v = dz.dataset.valor;
+        if (!v) return false;
+        valores.push(v);
+    }
+
+    // Garante que são 4 valores diferentes (1,2,3,4)
+    const set = new Set(valores);
+    return set.size === 4;
+}
+
+function avancarGrupo(g) {
+    if (!grupoCompleto(g)) {
+        alert("Preencha todos os números deste grupo (sem repetir) para avançar.");
+        return;
+    }
+    mostrarGrupo(g + 1);
+}
+
+/* --------- FINALIZAR E CALCULAR --------- */
+
+function finalizar() {
+    const ultimoGrupoIndex = grupos.length - 1;
+    if (!grupoCompleto(ultimoGrupoIndex)) {
+        alert("Complete todos os números do último grupo antes de finalizar.");
+        return;
+    }
+    calcular();
+}
+
+function calcular() {
+    let soma = { D:0, I:0, S:0, C:0 };
+
+    grupos.forEach((_, g) => {
+        const zonas = document.querySelectorAll(`.dropzone[data-group="${g}"]`);
+        zonas.forEach((dz, j) => {
+            const valor = parseInt(dz.dataset.valor || "0", 10);
+            soma[perfis[j]] += valor;
+        });
+    });
+
+    const ordenado = Object.entries(soma).sort((a,b)=>b[1]-a[1]);
+    const top1 = ordenado[0][0];
+    const top2 = ordenado[1][0];
+
+    ultimoResultado = {
+        ...soma,
+        top1,
+        top2,
+        combinacao: `${top1}-${top2}`
+    };
+
+    mostrarResultado();
+    enviarEmailResultado();
+}
+
+/* --------- RESULTADO / LAUDO --------- */
+
+function nomePerfil(letra) {
+    return {
+        D:"Dominância / Executor",
+        I:"Influência / Comunicador",
+        S:"Estabilidade / Planejador",
+        C:"Cautela / Analista"
+    }[letra];
+}
+
+function mostrarResultado() {
+    document.getElementById("formulario").style.display = "none";
+    document.querySelector(".instrucao").style.display = "none";
+    document.getElementById("progresso").style.display = "none";
+
+    const r = ultimoResultado;
+
+    const html = `
+        <h2>Resultado do Teste DISC</h2>
+        <p><b>Nome:</b> ${dadosCandidato.nome}</p>
+        <p><b>Telefone:</b> ${dadosCandidato.telefone}</p>
+        <p><b>E-mail:</b> ${dadosCandidato.email}</p>
+
+        <hr>
+
+        <p><b>Pontuações:</b></p>
+
+        <div class="cards-perfil">
+            <div class="card-perfil card-D">
+                D<br>Dominância / Executor
+                <span class="pontuacao">Pontuação: ${r.D}</span>
+            </div>
+            <div class="card-perfil card-I">
+                I<br>Influência / Comunicador
+                <span class="pontuacao">Pontuação: ${r.I}</span>
+            </div>
+            <div class="card-perfil card-S">
+                S<br>Estabilidade / Planejador
+                <span class="pontuacao">Pontuação: ${r.S}</span>
+            </div>
+            <div class="card-perfil card-C">
+                C<br>Cautela / Analista
+                <span class="pontuacao">Pontuação: ${r.C}</span>
+            </div>
+        </div>
+
+        <div class="laudo">
+            <h3>Perfis principais: ${r.top1} e ${r.top2}</h3>
+            <p><b>${r.top1} – ${nomePerfil(r.top1)}:</b> ${descricoesPerfis[r.top1]}</p>
+            <p><b>${r.top2} – ${nomePerfil(r.top2)}:</b> ${descricoesPerfis[r.top2]}</p>
+        </div>
+
+        <br>
+        <button onclick="enviarWhatsApp()">Enviar resultado por WhatsApp</button>
+    `;
+
+    const divRes = document.getElementById("resultado");
+    divRes.innerHTML = html;
+    divRes.style.display = "block";
+}
+
+/* --------- ENVIO EMAIL (SEM PDF) --------- */
+
+function enviarEmailResultado() {
+    if (!ultimoResultado) return;
+
+    const r = ultimoResultado;
+
+    const params = {
+        to_email: EMAILJS_TO,
+        nome: dadosCandidato.nome,
+        telefone: dadosCandidato.telefone,
+        email: dadosCandidato.email,
+        d: r.D,
+        i: r.I,
+        s: r.S,
+        c: r.C,
+        combinacao: r.combinacao
+    };
+
+    emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, params)
+        .then(() => {
+            alert("Resultado enviado para o e-mail da Atrius.");
+        })
+        .catch((erro) => {
+            console.error("Erro ao enviar e-mail:", erro);
+            alert("Não foi possível enviar o resultado por e-mail.");
+        });
+}
+
+/* --------- WHATSAPP --------- */
+
+function enviarWhatsApp() {
+    const r = ultimoResultado;
+    if (!r) {
+        alert("Resultado ainda não disponível.");
+        return;
+    }
+
+    const msg = `
+Nova avaliação DISC recebida:
+
+Nome: ${dadosCandidato.nome}
+Telefone: ${dadosCandidato.telefone}
+E-mail: ${dadosCandidato.email}
+
+D: ${r.D}
+I: ${r.I}
+S: ${r.S}
+C: ${r.C}
+
+Combinação principal: ${r.combinacao}
+    `;
+
+    window.open(`https://wa.me/${whatsNumero}?text=${encodeURIComponent(msg)}`);
+}
+</script>
+
+</body>
+</html>
